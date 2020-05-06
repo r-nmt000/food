@@ -1,0 +1,1 @@
+export const YELP_API_KEY = 'Set API KEY here';
