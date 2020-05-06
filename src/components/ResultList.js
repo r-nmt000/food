@@ -4,6 +4,9 @@ import { withNavigation } from '@react-navigation/compat';
 import ResultDetail from "./ResultDetail";
 
 const ResultList = ({title, results, navigation}) => {
+  if (!results.length) {
+    return null;
+  }
   return (
     <View style={styles.container}>
       <Text style={styles.title}>{title}</Text>
@@ -14,7 +17,7 @@ const ResultList = ({title, results, navigation}) => {
         keyExtractor={(result) => result.id}
         renderItem={({item}) =>{
           return (
-            <TouchableOpacity onPress={() => {navigation.navigate('ResultsShow')}}>
+            <TouchableOpacity onPress={() => {navigation.navigate('ResultsShow', { id: item.id})}}>
               <ResultDetail result={item}/>
             </TouchableOpacity>
           )
