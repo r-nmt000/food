@@ -6,19 +6,27 @@ import yelp from "../api/yelp"
 class SearchScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = {term: "", results:[]};
+    this.state = {
+      term: "",
+      results:[],
+      errorMessage: ""
+    };
   }
 
   searchApi = async () => {
-    const response = await yelp.get('/search',
-      {
-        params: {
-          limit: 50,
-          term: this.state.term,
-          location: 'san jose'
-        }
-      });
-    this.setState({results: response.data.businesses});
+    try {
+      const response = await yelp.get('/search',
+        {
+          params: {
+            limit: 50,
+            term: this.state.term,
+            location: 'san jose'
+          }
+        });
+      this.setState({results: response.data.businesses});
+    } catch (err) {
+      this.setState({errorMessage: 'Something went wrong'});
+    }
   };
 
   render() {
@@ -31,6 +39,7 @@ class SearchScreen extends Component {
           }}
         onTermSubmit={() => this.searchApi()}/>
         <Text>{this.state.term}</Text>
+        {this.state.errorMessage ? <Text>{this.state.errorMessage}</Text> : null }
         <Text>We have found {this.state.results.length} results</Text>
       </View>
     );
