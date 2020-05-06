@@ -13,13 +13,17 @@ class SearchScreen extends Component {
     };
   }
 
-  searchApi = async () => {
+  componentDidMount() {
+    this.searchApi(this.state.term);
+  }
+
+  searchApi = async (searchTerm) => {
     try {
       const response = await yelp.get('/search',
         {
           params: {
             limit: 50,
-            term: this.state.term,
+            term: searchTerm,
             location: 'san jose'
           }
         });
@@ -37,7 +41,7 @@ class SearchScreen extends Component {
           onTermChange={(newTerm) => {
             this.setState({term: newTerm});
           }}
-        onTermSubmit={() => this.searchApi()}/>
+        onTermSubmit={() => this.searchApi(this.state.term)}/>
         <Text>{this.state.term}</Text>
         {this.state.errorMessage ? <Text>{this.state.errorMessage}</Text> : null }
         <Text>We have found {this.state.results.length} results</Text>
